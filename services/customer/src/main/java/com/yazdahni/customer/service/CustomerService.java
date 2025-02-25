@@ -1,6 +1,6 @@
 package com.yazdahni.customer.service;
 
-import com.yazdahni.customer.Repository.CustomerRepository;
+import com.yazdahni.customer.repository.CustomerRepository;
 import com.yazdahni.customer.customer.Customer;
 import com.yazdahni.customer.dto.CustomerRequest;
 import com.yazdahni.customer.dto.CustomerResponse;
