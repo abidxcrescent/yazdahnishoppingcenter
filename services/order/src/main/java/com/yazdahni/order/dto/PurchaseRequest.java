@@ -1,4 +1,4 @@
-package com.yazdahni.order.product;
+package com.yazdahni.order.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

@@ -1,7 +1,6 @@
 package com.yazdahni.order.dto;
 
 import com.yazdahni.order.enums.PaymentMethod;
-import com.yazdahni.order.product.PurchaseRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

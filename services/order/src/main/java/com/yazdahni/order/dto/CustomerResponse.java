@@ -1,4 +1,4 @@
-package com.yazdahni.order.customer;
+package com.yazdahni.order.dto;
 
 public record CustomerResponse(
         String id,
