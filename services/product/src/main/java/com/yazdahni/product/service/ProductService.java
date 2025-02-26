@@ -8,7 +8,6 @@ import com.yazdahni.product.exception.ProductPurchaseException;
 import com.yazdahni.product.repository.ProductRepository;
 import com.yazdahni.product.util.ProductMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ public class ProductService {
                 .map(ProductPurchaseRequest::productId)
                 .toList();
 
-        var storedProducts = productRepository.findByAllIdInOrderById(productIds);
+        var storedProducts = productRepository.findAllByIdInOrderById(productIds);
 
         if (productIds.size() != storedProducts.size()) {
             throw new ProductPurchaseException("One or more products does not exists");

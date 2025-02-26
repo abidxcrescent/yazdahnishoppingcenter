@@ -1,6 +1,7 @@
 package com.yazdahni.product.util;
 
 import com.yazdahni.product.category.Category;
+import com.yazdahni.product.dto.ProductPurchaseResponse;
 import com.yazdahni.product.dto.ProductRequest;
 import com.yazdahni.product.dto.ProductResponse;
 import com.yazdahni.product.product.Product;
@@ -33,6 +34,16 @@ public class ProductMapper {
                 product.getCategory().getId(),
                 product.getCategory().getName(),
                 product.getCategory().getDescription()
+        );
+    }
+
+    public ProductPurchaseResponse toproductPurchaseResponse(Product product, double quantity) {
+        return new ProductPurchaseResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                quantity
         );
     }
 }
