@@ -2,8 +2,11 @@ package com.yazdahni.order.service;
 
 import com.yazdahni.order.customer.CustomerClient;
 import com.yazdahni.order.dto.OrderRequest;
+import com.yazdahni.order.dto.OrderResponse;
 import com.yazdahni.order.dto.PurchaseRequest;
 import com.yazdahni.order.exception.BusinessException;
+import com.yazdahni.order.kafka.OrderConfirmation;
+import com.yazdahni.order.kafka.OrderProducer;
 import com.yazdahni.order.orderline.OrderLineRequest;
 import com.yazdahni.order.orderline.OrderLineService;
 import com.yazdahni.order.product.ProductClient;
@@ -11,6 +14,9 @@ import com.yazdahni.order.repository.OrderRepository;
 import com.yazdahni.order.util.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,9 @@ public class OrderService {
 
     private final OrderLineService orderLineService;
 
+    private final OrderProducer orderProducer;
+    private final OrderMapper orderMapper;
+
     public Integer createOder(OrderRequest request) {
         // check the customer --> customer-ms using feign client
 
@@ -36,7 +45,7 @@ public class OrderService {
 
         // purchase the products --> purchase-ms using RestTemplate
 
-        this.productClient.purchaseProducts(request.products());
+        var purchasedProducts = this.productClient.purchaseProducts(request.products());
 
         // persist order
 
@@ -61,8 +70,29 @@ public class OrderService {
 
         // send order confirmation --> notification-ms (kafka)
 
+        orderProducer.sendOrderConfirmation(new OrderConfirmation(
+                request.reference(),
+                request.amount(),
+                request.paymentMethod(),
+                customer,
+                purchasedProducts
+        ));
 
+        return order.getId();
+    }
 
-        return null;
+    public List<OrderResponse> findAll() {
+        return orderRepository
+                .findAll()
+                .stream()
+                .map(this.orderMapper::fromOrder)
+                .collect(Collectors.toList());
+    }
+
+    public OrderResponse findById(Integer orderId) {
+        return orderRepository
+                .findById(orderId)
+                .map(orderMapper::fromOrder)
+                .orElseThrow(() -> new BusinessException("Cannot find order:: "+orderId));
     }
 }
