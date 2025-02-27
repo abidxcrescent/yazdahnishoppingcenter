@@ -2,6 +2,8 @@ package com.yazdahni.order.orderline;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderLineRepository extends JpaRepository<OrderLine, Integer> {
+import java.util.List;
 
+public interface OrderLineRepository extends JpaRepository<OrderLine, Integer> {
+    List<OrderLine> findAllByOrderId(Integer orderId);
 }
