@@ -9,6 +9,8 @@ import com.yazdahni.order.kafka.OrderConfirmation;
 import com.yazdahni.order.kafka.OrderProducer;
 import com.yazdahni.order.orderline.OrderLineRequest;
 import com.yazdahni.order.orderline.OrderLineService;
+import com.yazdahni.order.payment.PaymentClient;
+import com.yazdahni.order.payment.PaymentRequest;
 import com.yazdahni.order.product.ProductClient;
 import com.yazdahni.order.repository.OrderRepository;
 import com.yazdahni.order.util.OrderMapper;
@@ -33,7 +35,10 @@ public class OrderService {
     private final OrderLineService orderLineService;
 
     private final OrderProducer orderProducer;
+
     private final OrderMapper orderMapper;
+
+    private final PaymentClient paymentClient;
 
     public Integer createOder(OrderRequest request) {
         // check the customer --> customer-ms using feign client
@@ -67,6 +72,15 @@ public class OrderService {
 
 
         // todo start payment process
+
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         // send order confirmation --> notification-ms (kafka)
 

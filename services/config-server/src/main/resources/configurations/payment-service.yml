@@ -17,4 +17,6 @@ spring:
       properties:
         spring.json.type.mapping: paymentConfirmation:com.yazdahni.payment.notification.kafka.PaymentNotificationRequest
 
+server:
+  port: 8060
 
