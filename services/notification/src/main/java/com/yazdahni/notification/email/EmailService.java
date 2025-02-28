@@ -23,7 +23,6 @@ import java.util.Map;
 @Slf4j
 public class EmailService {
 
-
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
