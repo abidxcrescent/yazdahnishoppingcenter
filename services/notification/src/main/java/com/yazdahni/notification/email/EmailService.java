@@ -47,8 +47,6 @@ public class EmailService {
         variables.put("amount", amount);
         variables.put("orderReference", orderReference);
 
-
-
         Context context = new Context();
         context.setVariables(variables);
         mimeMessageHelper.setSubject(templateName);
