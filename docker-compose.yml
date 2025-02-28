@@ -1,18 +1,33 @@
 services:
-  postgres:
-    image: postgres:16
+  postgresql:
     container_name: ms_pg_sql
+    image: postgres
     environment:
-      POSTGRES_USER: product
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: product
+      POSTGRES_USER: alibou
+      POSTGRES_PASSWORD: alibou
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data
     networks:
       - microservices-net
     restart: unless-stopped
+
+#  postgres:
+#    image: postgres:16
+#    container_name: ms_pg_sql
+#    environment:
+#      POSTGRES_USER: abid
+#      POSTGRES_PASSWORD: pass
+#      POSTGRES_DB: abid
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./data/postgres:/var/lib/postgresql/data
+#    networks:
+#      - microservices-net
+#    restart: unless-stopped
 #  postgresql:
   ##    container_name: ms_pg_sql
   ##    image: postgres:latest
